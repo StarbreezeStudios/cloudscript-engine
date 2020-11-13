@@ -1,14 +1,12 @@
 "use strict";
 
-const cwd = process.cwd();
-const path = require('path').posix;
-
+const local_require = require('./local_require');
 const express = require("express");
 const assert = require("assert");
 const bodyParser = require("body-parser");
 const handlers_controller_injector = require("./handlers_controller_injector");
 
-const credentials = require(path.join(cwd, 'credentials'));
+const credentials = local_require('credentials');
 
 const title = process.argv[2];
 assert(title, "No title provided");

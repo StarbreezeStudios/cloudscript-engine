@@ -1,6 +1,6 @@
 /* global handlers, server, http, script, log, currentPlayerId, entity */
 
-const all_handlers = require("../src");
+const all_handlers = require("<%= main_entry_path %>");
 
 const handler = f => (args, context) => {
     const globals = {server, http, log, script, currentPlayerId, entity};

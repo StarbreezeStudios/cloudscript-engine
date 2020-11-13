@@ -1,8 +1,7 @@
 "use strict";
 
-const cwd = process.cwd();
-const path = require('path').posix;
-const handlers = require(path.join(cwd, 'src'));
+const local_require = require('./local_require');
+const handlers = local_require('src');
 
 const assert = require("assert");
 const presenter = require("./cloudscrpt_presenter");
