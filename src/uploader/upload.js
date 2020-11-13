@@ -1,9 +1,10 @@
 "use strict";
 
+const local_require = require('../local_require');
 const assert = require("assert");
 const fs = require("fs");
 const needle = require("needle");
-const credentials = require("../credentials.json");
+const credentials = local_require("credentials.json");
 
 const HTTP_METHOD = "POST";
 

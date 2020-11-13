@@ -1,6 +1,6 @@
 "use strict";
 
-const local_require = require('./local_require');
+const local_require = require('../local_require');
 const handlers = local_require('src');
 
 const assert = require("assert");

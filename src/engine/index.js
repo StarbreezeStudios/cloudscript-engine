@@ -1,6 +1,6 @@
 "use strict";
 
-const local_require = require('./local_require');
+const local_require = require('../local_require');
 const express = require("express");
 const assert = require("assert");
 const bodyParser = require("body-parser");

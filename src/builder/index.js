@@ -12,8 +12,7 @@ const config = {
 let main_entry_path = `../${process.argv[2]}`;
 console.log('Using ', main_entry_path);
 
-// write tmp/entry.js
-let webpack_wrapper_path = path.join(__dirname, 'webpack.js');
+let webpack_wrapper_path = path.join(__dirname, 'webpack_wrapper_template.js');
 let webpack_wrapper = fs.readFileSync(webpack_wrapper_path, {encoding: "utf-8"});
 const template = _.template(webpack_wrapper);
 fs.writeFileSync('./tmp/entry.js', template({main_entry_path}));
