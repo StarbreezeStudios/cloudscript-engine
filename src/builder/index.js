@@ -1,26 +1,26 @@
 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const _ = require('underscore');
+const assert = require('assert');
 const webpack = require('webpack');
-const config = {
-    mode: "none",
-    entry: "./tmp/entry.js"
+const create_local_wrapper = require('./create_local_wrapper')
+
+// This path is relative to cwd
+const WRAPPER_PATH = './tmp/entry.js';
+
+const webpack_config = {
+    mode: 'none',
+    entry: WRAPPER_PATH
 };
 
-let main_entry_path = `../${process.argv[2]}`;
-console.log('Using ', main_entry_path);
+const handlers = process.argv[2];
+assert(handlers, 'Handlers source must be provided.');
 
-let webpack_wrapper_path = path.join(__dirname, 'webpack_wrapper_template.js');
-let webpack_wrapper = fs.readFileSync(webpack_wrapper_path, {encoding: "utf-8"});
-const template = _.template(webpack_wrapper);
-fs.writeFileSync('./tmp/entry.js', template({main_entry_path}));
+create_local_wrapper(handlers, WRAPPER_PATH);
 
-webpack(config, (err, stats) => {
+webpack(webpack_config, (err, stats) => {
     if (err || stats.hasErrors()) {
-        console.error("Error!");
+        console.error('Error!', stats);
         return;
     }
-    console.log('Done!')
+    console.log('Webpack Done!')
 });

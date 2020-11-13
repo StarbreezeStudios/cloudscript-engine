@@ -2,14 +2,13 @@
   "name": "cloudscript-engine",
   "version": "0.0.1",
   "description": "NodeJS based PlayFab CloudScript engine",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
     "csengine": "bin/csengine"
   },
-  "author": "",
+  "author": "Starbreeze Studios",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.19.0",
