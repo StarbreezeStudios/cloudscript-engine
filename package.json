@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "NodeJS based PlayFab CloudScript engine",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint src test bin/csengine && mocha test"
   },
   "bin": {
     "csengine": "bin/csengine"
