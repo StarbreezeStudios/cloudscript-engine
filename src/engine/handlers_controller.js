@@ -1,12 +1,9 @@
 'use strict';
 
-const local_require = require('../local_require');
-const handlers = local_require('src');
-
 const assert = require('assert');
 const presenter = require('./cloudscrpt_presenter');
 
-module.exports = globals => ({
+module.exports = (globals, handlers) => ({
   execute_cloudscript: request => {
     assert(handlers[request.FunctionName], `No implementation for handler named ${request.FunctionName}`);
 

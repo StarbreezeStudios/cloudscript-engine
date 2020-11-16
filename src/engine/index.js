@@ -4,9 +4,11 @@ const local_require = require('../local_require');
 const express = require('express');
 const assert = require('assert');
 const bodyParser = require('body-parser');
-const handlers_controller_injector = require('./handlers_controller_injector');
 
+const handlers = local_require('src');
 const credentials = local_require('credentials');
+
+const handlers_controller_injector = require('./handlers_controller_injector')(handlers);
 
 const title = process.argv[2];
 assert(title, 'No title provided');
@@ -14,7 +16,7 @@ assert(title, 'No title provided');
 const PORT = 3000;
 const FORWARD_URL = `https://${title}.playfabapi.com`;
 const secret = credentials[title];
-assert(secret, 'No credentials found for title', title);
+assert(secret, `No credentials found for title ${title}`);
 
 const injector = handlers_controller_injector(title, secret);
 
@@ -37,5 +39,5 @@ app.post('*', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.info(`Development playfab server running at http://localhost:${PORT}`);
+  console.info(`Cloudscript Engine running at http://localhost:${PORT}`);
 });

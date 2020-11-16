@@ -1,30 +1,30 @@
-"use strict";
+'use strict';
 
-const sync_server = require("./sync_server");
-const dummy_log = require("./dummy_log");
-const handlers_controller = require("./handlers_controller");
-const {server_client} = require("./playfab_client");
+const sync_server = require('./sync_server');
+const dummy_log = require('./dummy_log');
+const handlers_controller = require('./handlers_controller');
+const {server_client} = require('./playfab_client');
 
-module.exports = (title, secret) => session_ticket => {
-    const request_player_id = () => {
-        const payload = {"SessionTicket": session_ticket};
-        return server_client(title, secret)
-            .perform_request("/Server/AuthenticateSessionTicket", payload);
-    };
+module.exports = handlers => (title, secret) => session_ticket => {
+  const request_player_id = () => {
+    const payload = {'SessionTicket': session_ticket};
+    return server_client(title, secret)
+      .perform_request('/Server/AuthenticateSessionTicket', payload);
+  };
 
-    const execute_cloudscript = payload => {
-        const server = sync_server(title, secret);
-        const log = dummy_log();
-        return request_player_id().then(response => {
-            if (response.body.code !== 200) {
-                throw(response);
-            }
-            const currentPlayerId = response.body.data.UserInfo.PlayFabId;
-            return handlers_controller({server, log, currentPlayerId}).execute_cloudscript(payload);
-        });
-    };
+  const execute_cloudscript = payload => {
+    const server = sync_server(title, secret);
+    const log = dummy_log();
+    return request_player_id().then(response => {
+      if (response.body.code !== 200) {
+        throw(response);
+      }
+      const currentPlayerId = response.body.data.UserInfo.PlayFabId;
+      return handlers_controller({server, log, currentPlayerId}, handlers).execute_cloudscript(payload);
+    });
+  };
 
-    return {
-        execute_cloudscript
-    };
+  return {
+    execute_cloudscript
+  };
 };
