@@ -9,7 +9,7 @@
     "csengine": "bin/csengine"
   },
   "author": "Starbreeze Studios",
-  "license": "ISC",
+  "license": "GPL",
   "dependencies": {
     "body-parser": "^1.19.0",
     "commander": "^6.2.0",
