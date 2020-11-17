@@ -24,6 +24,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+      env:
+        TEST_TITLE: ${{ secrets.TEST_TITLE }}
+        TEST_TITLE_SECRET: ${{ secrets.TEST_TITLE_SECRET }}
+        TEST_PLAYER_ID: ${{ secrets.TEST_PLAYER_ID }}
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test
