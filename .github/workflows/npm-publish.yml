@@ -17,6 +17,10 @@ jobs:
           node-version: 12
       - run: npm ci
       - run: npm test
+        env:
+          TEST_TITLE: ${{ secrets.TEST_TITLE }}
+          TEST_TITLE_SECRET: ${{ secrets.TEST_TITLE_SECRET }}
+          TEST_PLAYER_ID: ${{ secrets.TEST_PLAYER_ID }}
 
   publish-npm:
     needs: build
