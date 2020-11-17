@@ -15,7 +15,7 @@ const server = ({title, secret, port, forward_url, handlers}) => {
       .execute_cloudscript(req.body)
       .then(result => res.send(result))
       .catch(() => {
-        res.send(502, 'Bad Gateway');
+        res.status(500).send('Internal server error. More information in cloudscript engine log.');
       });
   });
 
