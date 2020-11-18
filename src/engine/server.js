@@ -10,7 +10,7 @@ const server = ({title, secret, port, forward_url, handlers}) => {
   const app = express();
 
   app.post('/Client/ExecuteCloudScript', (req, res) => {
-    const session_ticket = req.headers['x-authentication'];
+    const session_ticket = req.headers['x-authorization'];
     injector(session_ticket)
       .execute_cloudscript(req.body)
       .then(result => res.send(result))

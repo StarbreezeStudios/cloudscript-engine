@@ -3,12 +3,12 @@
 const sync_server = require('./sync_server');
 const dummy_log = require('./dummy_log');
 const handlers_controller = require('./handlers_controller');
-const {server_client} = require('./playfab_client');
+const playfab_client = require('./playfab_client');
 
 module.exports = handlers => (title, secret) => session_ticket => {
   const request_player_id = () => {
     const payload = {'SessionTicket': session_ticket};
-    return server_client(title, secret)
+    return playfab_client(title, secret)
       .perform_request('/Server/AuthenticateSessionTicket', payload);
   };
 
