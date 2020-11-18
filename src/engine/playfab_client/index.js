@@ -1,9 +1,14 @@
 'use strict';
 
-const cloudscript_client = require('./cloudscript_client');
-const server_client = require('./server_client');
+const common_client = require('./common_client');
 
-module.exports = {
-  cloudscript_client,
-  server_client
+module.exports = (title, secret) => {
+  const title_client = common_client(title);
+  const perform_request = (path, payload) => {
+    return title_client({'X-SecretKey': secret})(path, payload);
+  };
+
+  return {
+    perform_request
+  };
 };
