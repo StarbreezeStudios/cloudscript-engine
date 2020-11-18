@@ -39,14 +39,15 @@ program
 program
   .command('run <title> <source>')
   .description('run cloudscript engine server')
-  .action((title, source) => {
-    const PORT = 3000;
+  .option('-p, --port <port>', 'server port to use', '3000')
+  .action((title, source, options) => {
+    const port = options.port;
     const handlers = local_require(source);
     const forward_url = `https://${title}.playfabapi.com`;
     return engine({
       title,
       secret: secret(title),
-      port: PORT,
+      port,
       forward_url,
       handlers
     });
