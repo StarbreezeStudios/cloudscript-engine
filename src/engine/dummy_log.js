@@ -3,8 +3,8 @@
 module.exports = () => {
   const log_array = [];
   const log_function = Level => (...messages) => {
-    log_array.push({Message: messages.join(" "), Level});
-    console.log(...messages);
+    log_array.push({Message: messages.join(' '), Level});
+    console.info(...messages);
   };
 
   return {
