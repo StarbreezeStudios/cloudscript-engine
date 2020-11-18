@@ -1,6 +1,6 @@
 {
   "name": "cloudscript-engine",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "NodeJS based PlayFab CloudScript engine",
   "scripts": {
     "test": "eslint src test bin/csengine && mocha test"
