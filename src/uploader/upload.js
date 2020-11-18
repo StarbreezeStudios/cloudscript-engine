@@ -1,33 +1,17 @@
 'use strict';
 
-const local_require = require('../local_require');
-const assert = require('assert');
-const fs = require('fs');
+const {promisify} = require('util');
+const readFile = promisify(require('fs').readFile);
 const needle = require('needle');
-const credentials = local_require('credentials.json');
 
 const HTTP_METHOD = 'POST';
 
-const title = process.argv[2];
-assert(title, 'No title provided');
-
-const secret = credentials[title];
-assert(secret, 'No credentials found for title', title);
-
-const file_path = process.argv[3];
-assert(file_path, 'No source file path provided');
-
-const upload_url = `https://${title}.playfabapi.com/Admin/UpdateCloudScript`;
-
-fs.readFile(file_path, (err, file_content) => {
-  if (err) {
-    console.error(err);
-    process.exit(1);
-  }
+module.exports = async (title, secret, file_path) => {
+  const file_content = await readFile(file_path, {encoding: 'utf-8'});
 
   const payload = {
     'Files': [{
-      'FileContents': file_content.toString(),
+      'FileContents': file_content,
       'FileName': file_path
     }],
     'Publish': true
@@ -42,15 +26,12 @@ fs.readFile(file_path, (err, file_content) => {
     json: true
   };
 
+  const upload_url = `https://${title}.playfabapi.com/Admin/UpdateCloudScript`;
   return needle(HTTP_METHOD, upload_url, payload, options)
     .then(res => {
       if(res.statusCode !== 200) {
         throw(res.body);
       }
-      console.info(res.body);
-    })
-    .catch(error => {
-      console.error(error);
-      process.exit(1);
+      return res.body;
     });
-});
+};
