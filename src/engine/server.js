@@ -10,18 +10,19 @@ const server = ({title, secret, port, forward_url, handlers}) => {
   const app = express();
 
   app.post('/Client/ExecuteCloudScript', (req, res) => {
-    const session_ticket = req.headers['x-authorization'];
+    const session_ticket = req.headers['x-authentication'];
     injector(session_ticket)
       .execute_cloudscript(req.body)
       .then(result => res.send(result))
-      .catch(() => {
+      .catch(err => {
+        console.error(err);
         res.status(500).send('Internal server error. More information in cloudscript engine log.');
       });
   });
 
   app.post('*', (req, res) => {
     res.redirect(307, forward_url + req.url);
-    console.info('redirecting to ', forward_url + req.url);
+    console.info('redirecting to', forward_url + req.url);
   });
 
   app.listen(port, () => {

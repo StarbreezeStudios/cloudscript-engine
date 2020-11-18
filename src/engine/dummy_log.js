@@ -2,7 +2,10 @@
 
 module.exports = () => {
   const log_array = [];
-  const log_function = Level => Message => log_array.push({Message, Level});
+  const log_function = Level => (...messages) => {
+    log_array.push({Message: messages.join(" "), Level});
+    console.log(...messages);
+  };
 
   return {
     debug: log_function('Debug'),
