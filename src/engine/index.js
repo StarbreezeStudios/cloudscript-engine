@@ -1,17 +1,17 @@
 'use strict';
 
 const express = require('./custom_express');
+const handlers_controller_injector = require('./handlers_controller_injector');
 
-const index = ({title, secret, port, forward_url, handlers}) => {
+const index = ({title, secret, port, handlers}) => {
 
-  const handlers_controller_injector = require('./handlers_controller_injector')(handlers);
-  const injector = handlers_controller_injector(title, secret);
+  const controller = handlers_controller_injector(handlers)(title, secret);
 
   const app = express();
 
   app.post('/Client/ExecuteCloudScript', (req, res) => {
     const session_ticket = req.headers['x-authorization'];
-    injector(session_ticket)
+    controller(session_ticket)
       .execute_cloudscript(req.body)
       .then(result => res.send(result))
       .catch(err => {
@@ -20,6 +20,7 @@ const index = ({title, secret, port, forward_url, handlers}) => {
       });
   });
 
+  const forward_url = `https://${title}.playfabapi.com`;
   app.post('*', (req, res) => {
     res.redirect(307, forward_url + req.url);
     console.info('redirecting to', forward_url + req.url);
