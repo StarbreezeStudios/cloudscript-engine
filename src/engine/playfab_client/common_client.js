@@ -11,7 +11,7 @@ module.exports = title => headers => {
       json: true,
       rejectUnauthorized: false
     };
-
+    console.warn(HTTP_METHOD, forward_url + path, payload, options);
     return needle(HTTP_METHOD, forward_url + path, payload, options);
   };
 };
