@@ -35,7 +35,7 @@ describe('Handlers controller', function () {
     });
 
     const request = {
-      FunctionName: 'WebpackTest',
+      FunctionName: 'SimpleTestHandler',
       GeneratePlayStreamEvent: true,
       FunctionParameter: {
         param_1_key: 'param_1_value',
@@ -50,7 +50,7 @@ describe('Handlers controller', function () {
       data: {
         APIRequestsIssued: 1,
         ExecutionTimeSeconds: 0,
-        FunctionName: 'WebpackTest',
+        FunctionName: 'SimpleTestHandler',
         FunctionResult: 'Ok',
         HttpRequestsIssued: 0,
         Logs: [
