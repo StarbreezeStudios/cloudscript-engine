@@ -2,6 +2,14 @@
   "name": "cloudscript-engine",
   "version": "0.0.5",
   "description": "NodeJS based PlayFab CloudScript engine",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/StarbreezeStudios/cloudscript-engine.git"
+  },
+  "keywords": [
+    "PlayFab", "cloudscript", "engine", "debug", "local", "server", "handler", "backend",
+    "develop", "developer", "development", "game", "gaming", "games", "csengine", "cli"
+  ],
   "scripts": {
     "test": "eslint src test bin/csengine && mocha test"
   },
