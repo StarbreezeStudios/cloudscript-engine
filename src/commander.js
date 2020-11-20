@@ -8,6 +8,7 @@ const report = require('./report');
 const builder = require('./builder');
 const engine = require('./engine');
 const upload = require('./uploader');
+const extras = require('./extras');
 
 const { version } = require('../package.json');
 const { program } = require('commander');
@@ -46,7 +47,17 @@ program
   .requiredOption(...TITLE)
   .option(...CREDENTIALS)
   .option('-p, --port <port>', 'server port to use', '3000')
-  .action((source, {title, port, credentials}) => {
+  .option('-m, --monitor', 'Watch for changes in source directory')
+  .option('-i, --inspect', 'Enable debugging (Node.js inspector)')
+  .action((source, {title, port, credentials, monitor, inspect}) => {
+    if(monitor) {
+      extras.monitor(source);
+    }
+
+    if(inspect) {
+      extras.inspect();
+    }
+
     const handlers = local_require(source);
     const secret = secrets(credentials, title);
     return engine({title, secret, port, handlers});
