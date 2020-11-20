@@ -14,7 +14,7 @@ describe('cloudscript presenter', () => {
     };
 
     const handler_result = 'Ok';
-    const function_name = 'WebpackTest';
+    const function_name = 'SimpleTestHandler';
 
     const result = presenter(function_name, log, handler_result);
 
@@ -22,7 +22,7 @@ describe('cloudscript presenter', () => {
       code: 200,
       status: 'OK',
       data: {
-        FunctionName: 'WebpackTest',
+        FunctionName: 'SimpleTestHandler',
         Revision: -1,
         FunctionResult: 'Ok',
         ExecutionTimeSeconds: 0.0,

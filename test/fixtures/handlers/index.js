@@ -1,6 +1,6 @@
 'use strict';
 
-const WebpackTest = ({server, log, currentPlayerId}) => args => {
+const SimpleTestHandler = ({server, log, currentPlayerId}) => args => {
   const userInfoResult = server.GetUserAccountInfo({PlayFabId: currentPlayerId});
   const userName = userInfoResult.UserInfo.TitleInfo.DisplayName;
   log.debug('currentPlayerId: ' + currentPlayerId);
@@ -11,7 +11,7 @@ const WebpackTest = ({server, log, currentPlayerId}) => args => {
 };
 
 const handlers = {
-  WebpackTest
+  SimpleTestHandler
 };
 
 module.exports = handlers;

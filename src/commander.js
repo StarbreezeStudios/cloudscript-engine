@@ -2,16 +2,8 @@
 'use strict';
 
 const local_require = require('./local_require');
-const secret = title => {
-  let secrets;
-  try {
-    secrets = local_require('credentials.json');
-  } catch(e) {
-    console.error('Local credentials.json file missing.');
-    process.exit(1);
-  }
-  return secrets[title];
-};
+const secrets = require('./secret');
+const report = require('./report');
 
 const builder = require('./builder');
 const engine = require('./engine');
@@ -20,44 +12,54 @@ const upload = require('./uploader');
 const { version } = require('../package.json');
 const { program } = require('commander');
 
-const report = p => p
-  .then(console.info)
-  .catch(error => {
-    console.error(error);
-    process.exit(1);
-  });
+const TITLE = [
+  '-t, --title <title>',
+  'PlayFab title'
+];
 
-program.version(version);
+const CREDENTIALS = [
+  '-c, --credentials <credentials>',
+  'Credentials file where PlayFab secret tokens is stored.',
+  'credentials.json'
+];
+
+const BUNDLE = [
+  '-b, --bundle <bundle_path>',
+  'Webpack bundle',
+  'dist/main.js'
+];
 
 program
-  .command('build <source> [bundle_path]')
+  .version(version);
+
+program
+  .command('build <source>')
   .description('build webpack bundle')
-  .action((source, bundle_path = 'dist/main.js') =>
-    report(builder(source, bundle_path))
+  .option(...BUNDLE)
+  .action((source, {bundle}) =>
+    report(builder(source, bundle))
   );
 
 program
-  .command('run <title> <source>')
+  .command('run <source>')
   .description('run cloudscript engine server')
+  .requiredOption(...TITLE)
+  .option(...CREDENTIALS)
   .option('-p, --port <port>', 'server port to use', '3000')
-  .action((title, source, options) => {
-    const port = options.port;
+  .action((source, {title, port, credentials}) => {
     const handlers = local_require(source);
-    const forward_url = `https://${title}.playfabapi.com`;
-    return engine({
-      title,
-      secret: secret(title),
-      port,
-      forward_url,
-      handlers
-    });
+    const secret = secrets(credentials, title);
+    return engine({title, secret, port, handlers});
   });
 
 program
-  .command('upload <title> [bundle_path]')
+  .command('upload')
   .description('upload built bundle to PlayFab')
-  .action((title, bundle_path = 'dist/main.js') =>
-    report(upload(title, secret(title), bundle_path))
+  .requiredOption(...TITLE)
+  .option(...CREDENTIALS)
+  .option(...BUNDLE)
+  .action(({title, credentials, bundle}) =>
+    report(upload(title, secrets(credentials, title), bundle))
   );
 
 program.parse(process.argv);
