@@ -1,7 +1,7 @@
 /* global handlers, server, http, script, log, currentPlayerId, entity */
 'use strict';
 
-const all_handlers = require('<%= source_path %>');
+const all_handlers = require('Handlers');
 
 const handler = f => (args, context) => {
   const globals = {server, http, log, script, currentPlayerId, entity};
