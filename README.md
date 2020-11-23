@@ -1,3 +1,7 @@
+[![Build Status](https://github.com/StarbreezeStudios/cloudscript-engine/workflows/NPM%20Publish/badge.svg)](https://github.com/StarbreezeStudios/cloudscript-engine/actions?query=workflow%3A%22NPM+Publish%22)
+[![Tests](https://github.com/StarbreezeStudios/cloudscript-engine/workflows/Run%20Tests/badge.svg)](https://github.com/StarbreezeStudios/cloudscript-engine/actions?query=workflow%3A%22Run+Tests%22)
+[![NPM Version](http://img.shields.io/npm/v/cloudscript-engine.svg?style=flat)](https://www.npmjs.org/package/cloudscript-engine)
+
 # cloudscript-engine
 
 Node.js based Framework to simplify PlayFab's Cloudscript handlers development.
