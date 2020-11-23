@@ -1,16 +1,15 @@
 'use strict';
-const {dirname, basename, resolve} = require('path');
+const {dirname, basename, resolve, join} = require('path');
 const {promisify} = require('util');
 const webpack = promisify(require('webpack'));
 
-// This path is relative to cwd
-const WRAPPER_PATH = './tmp/entry.js';
+const webpack_wrapper = resolve(join(__dirname, 'webpack_wrapper.js'));
 
 module.exports = async (source, bundle_path) => {
 
   const config = {
     mode: 'none',
-    entry: WRAPPER_PATH,
+    entry: webpack_wrapper,
     resolve: {
       alias: {
         Handlers: resolve(source)
