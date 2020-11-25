@@ -2,6 +2,7 @@
 
 const express = require('./custom_express');
 const handlers_controller_injector = require('./handlers_controller_injector');
+const redirect_forward = require('./forward_methods/redirect_forward');
 
 const index = ({title, secret, port, handlers}) => {
 
@@ -21,10 +22,7 @@ const index = ({title, secret, port, handlers}) => {
   });
 
   const forward_url = `https://${title}.playfabapi.com`;
-  app.post('*', (req, res) => {
-    res.redirect(307, forward_url + req.url);
-    console.info('redirecting to', forward_url + req.url);
-  });
+  app.post('*', redirect_forward(forward_url));
 
   app.listen(port, () => {
     console.info(`Cloudscript Engine running at http://localhost:${port}`);
