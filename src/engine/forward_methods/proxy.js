@@ -15,15 +15,15 @@ const propagate_header = (src, dest) => header => {
 
 module.exports = forward_url => (req, res) => {
   const url = forward_url + req.url;
+  console.info('proxying to', url);
 
   const method = req.method;
-  const data = JSON.stringify(req.body);
   const headers = {};
   const options = {headers, json: true};
 
   FORWARD_HEADERS.forEach(propagate_header(req.headers, headers));
 
-  needle(method, url, data, options)
+  needle(method, url, req.body, options)
     .then(({statusCode, body}) => {
       res
         .status(statusCode)

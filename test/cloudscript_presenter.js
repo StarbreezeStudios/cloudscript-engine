@@ -1,7 +1,7 @@
 'use strict';
 
 const {expect} = require('./util/chai');
-const presenter = require('../src/engine/cloudscrpt_presenter');
+const presenter = require('../src/engine/web_server/cloudscript_presenter');
 
 describe('cloudscript presenter', () => {
 

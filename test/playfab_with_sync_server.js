@@ -2,7 +2,7 @@
 'use strict';
 
 const {assert} = require('./util/chai');
-const SyncServer = require('../src/engine/sync_server');
+const SyncServer = require('../src/engine/web_server/sync_server');
 
 const TEST_TITLE = process.env.TEST_TITLE;
 const TEST_TITLE_SECRET = process.env.TEST_TITLE_SECRET;
