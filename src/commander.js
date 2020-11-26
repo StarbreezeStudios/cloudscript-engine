@@ -39,6 +39,7 @@ program
   .option(...BUNDLE)
   .action((source, {bundle}) =>
     report(builder(source, bundle))
+      .then(() => console.info('csengine build done.'))
   );
 
 program
@@ -71,6 +72,7 @@ program
   .option(...BUNDLE)
   .action(({title, credentials, bundle}) =>
     report(upload(title, secrets(credentials, title), bundle))
+      .then(() => console.info('csengine upload complete.'))
   );
 
 program.parse(process.argv);
