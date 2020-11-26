@@ -31,7 +31,7 @@ On the other hand, Node.js provides an excellent environment to execute javascri
 but javascript). Node.js also provides a proven module stack and a huge amount of tools. 
 
 If we could only write Cloudscript handlers as node modules, where all the contexts are function parameters, and
-have tools to pack and upload to PlayFab Cloudscript format. Then we would be able to version control, write tests,
+have tools to pack and upload to PlayFab Cloudscript format, then we would be able to version control, write tests,
 run locally, debug, release management, etc.
 
 This is exactly what **cloudscript-engine** module does.
