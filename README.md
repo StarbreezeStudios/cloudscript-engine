@@ -5,11 +5,39 @@
 # cloudscript-engine
 
 Node.js based Framework to simplify PlayFab's Cloudscript handlers development.
+
 Key features:
 
 * Run and debug your handlers locally using actual PlayFab title database
 * Pack your handlers in just one file bundle
 * Deploy your handlers easily
+
+## Why ?
+
+If you have developed games using PlayFab backend, you know that you start with simple Cloudscript functions.
+As the game gets more complex, so does your Cloudscript.
+
+Unfortunately, PlayFab doesn't provide a good way to develop or **debug** your functions. The naive way is to
+edit directly in Cloudscript web editor or to keep uploading development revisions full of Logs, and watch
+those Logs to see what's going on. 
+
+This is extremely inefficient and error prone.
+
+Additionally, you may want to **Unit Test** your Cloudscript functions. But this is not easy job because Cloudscript
+functions rely on a set of globals that get automagically set for you at runtime. To use any modern standard test
+framework you need isolation and modularity.
+
+On the other hand, Node.js provides an excellent environment to execute javascript (and Cloudscript is nothing
+but javascript). Node.js also provides a proven module stack and a huge amount of tools. 
+
+If we could only write Cloudscript handlers as node modules, where all the contexts are function parameters, and
+have tools to pack and upload to PlayFab Cloudscript format, then we would be able to version control, write tests,
+run locally, debug, release management, etc.
+
+This is exactly what **cloudscript-engine** module does.
+
+It requires you to write your handlers as node modules with a fixed function signature, 
+and in exchange clears the way to agile development and project complexity management.
 
 ## Installation  
   
