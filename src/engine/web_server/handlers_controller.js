@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('assert');
-const presenter = require('./cloudscrpt_presenter');
+const presenter = require('./cloudscript_presenter');
 
 module.exports = (globals, handlers) => ({
   execute_cloudscript: request => {

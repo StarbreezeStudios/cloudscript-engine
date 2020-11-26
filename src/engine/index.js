@@ -1,33 +1,24 @@
 'use strict';
 
-const express = require('./custom_express');
-const handlers_controller_injector = require('./handlers_controller_injector');
-const redirect_forward = require('./forward_methods/redirect_forward');
+const local_require = require('../local_require');
+const web_server = require('./web_server');
+const inspect = require('./inspect');
+const monitor = require('./monitor');
+const forward_methods = require('./forward_methods');
+const validators = require('./validators');
 
-const index = ({title, secret, port, handlers}) => {
+const run = secrets => (source, {title, port, credentials, ...options}) => {
+  const forward_method = forward_methods[options.forwardMethod];
 
-  const controller = handlers_controller_injector(handlers)(title, secret);
+  const handlers = local_require(source);
+  const secret = secrets(credentials, title);
 
-  const app = express();
-
-  app.post('/Client/ExecuteCloudScript', (req, res) => {
-    const session_ticket = req.headers['x-authorization'];
-    controller(session_ticket)
-      .execute_cloudscript(req.body)
-      .then(result => res.send(result))
-      .catch(err => {
-        console.error(err);
-        res.status(500).send('Internal server error. More information in cloudscript engine log.');
-      });
-  });
-
-  const forward_url = `https://${title}.playfabapi.com`;
-  app.post('*', redirect_forward(forward_url));
-
-  app.listen(port, () => {
-    console.info(`Cloudscript Engine running at http://localhost:${port}`);
-  });
-
+  return web_server(forward_method)({title, port, secret, handlers})
+    .then(() => options.monitor && monitor(source))
+    .then(() => options.inspect && inspect());
 };
 
-module.exports = index;
+module.exports = {
+  validators: validators(forward_methods),
+  run
+};

@@ -15,6 +15,7 @@ const propagate_header = (src, dest) => header => {
 
 module.exports = forward_url => (req, res) => {
   const url = forward_url + req.url;
+  console.info('proxying to', url);
 
   const method = req.method;
   const headers = {};

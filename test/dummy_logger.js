@@ -1,7 +1,7 @@
 'use strict';
 
 const {expect} = require('./util/chai');
-const dummy_log = require('../src/engine/dummy_log');
+const dummy_log = require('../src/engine/web_server/dummy_log');
 
 describe('dummy_log', () => {
 

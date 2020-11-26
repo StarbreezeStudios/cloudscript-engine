@@ -1,14 +1,12 @@
 #!/usr/bin/env node
 'use strict';
 
-const local_require = require('./local_require');
 const secrets = require('./secret');
 const report = require('./report');
 
 const builder = require('./builder');
 const engine = require('./engine');
 const upload = require('./uploader');
-const extras = require('./extras');
 
 const { version } = require('../package.json');
 const { program } = require('commander');
@@ -30,6 +28,20 @@ const BUNDLE = [
   'dist/main.js'
 ];
 
+const FORWARD_METHOD = [
+  '-f, --forward-method <method>',
+  'Forward method. Choose between redirect and proxy',
+  engine.validators.forward_method,
+  'redirect'
+];
+
+const WEB_SERVER_PORT = [
+  '-p, --port <port>',
+  'server port to use',
+  engine.validators.web_server_port,
+  '3000'
+];
+
 program
   .version(version);
 
@@ -43,28 +55,6 @@ program
   );
 
 program
-  .command('run <source>')
-  .description('run cloudscript engine server')
-  .requiredOption(...TITLE)
-  .option(...CREDENTIALS)
-  .option('-p, --port <port>', 'server port to use', '3000')
-  .option('-m, --monitor', 'Watch for changes in source directory')
-  .option('-i, --inspect', 'Enable debugging (Node.js inspector)')
-  .action((source, {title, port, credentials, monitor, inspect}) => {
-    if(monitor) {
-      extras.monitor(source);
-    }
-
-    if(inspect) {
-      extras.inspect();
-    }
-
-    const handlers = local_require(source);
-    const secret = secrets(credentials, title);
-    return engine({title, secret, port, handlers});
-  });
-
-program
   .command('upload')
   .description('upload built bundle to PlayFab')
   .requiredOption(...TITLE)
@@ -74,5 +64,16 @@ program
     report(upload(title, secrets(credentials, title), bundle))
       .then(() => console.info('csengine upload complete.'))
   );
+
+program
+  .command('run <source>')
+  .description('run cloudscript engine server')
+  .requiredOption(...TITLE)
+  .option(...CREDENTIALS)
+  .option(...WEB_SERVER_PORT)
+  .option(...FORWARD_METHOD)
+  .option('-m, --monitor', 'Watch for changes in source directory')
+  .option('-i, --inspect', 'Enable debugging (Node.js inspector)')
+  .action(engine.run(secrets));
 
 program.parse(process.argv);

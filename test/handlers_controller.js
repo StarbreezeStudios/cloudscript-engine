@@ -2,8 +2,8 @@
 
 const {expect} = require('./util/chai');
 const build_fake_globals = require('./util/build_base_fake_globals');
-const handlers_controller = require('../src/engine/handlers_controller');
-const dummy_log = require('../src/engine/dummy_log');
+const handlers_controller = require('../src/engine/web_server/handlers_controller');
+const dummy_log = require('../src/engine/web_server/dummy_log');
 
 const handlers = require('./fixtures/handlers');
 
