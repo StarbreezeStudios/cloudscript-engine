@@ -12,7 +12,7 @@ const run = (source, {title, secret, port, monitor, inspect, forwardMethod}) => 
 
   const handlers = local_require(source);
 
-  return web_server(forwarder)({title, port, secret, handlers})
+  return web_server({title, port, secret, handlers, forwarder})
     .then(() => monitor && Monitor(source))
     .then(() => inspect && Inspect());
 };

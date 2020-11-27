@@ -3,7 +3,7 @@
 const express = require('./custom_express');
 const handlers_controller_injector = require('./handlers_controller_injector');
 
-const index = forward_method => ({title, secret, port, handlers}) => {
+const index = ({title, secret, port, handlers, forwarder}) => {
 
   const controller = handlers_controller_injector(handlers)(title, secret);
 
@@ -21,7 +21,7 @@ const index = forward_method => ({title, secret, port, handlers}) => {
   });
 
   const forward_url = `https://${title}.playfabapi.com`;
-  app.post('*', forward_method(forward_url));
+  app.post('*', forwarder(forward_url));
 
   return new Promise(resolve => {
     app.listen(port, () => {
