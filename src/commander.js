@@ -74,6 +74,9 @@ program
   .option(...FORWARD_METHOD)
   .option('-m, --monitor', 'Watch for changes in source directory')
   .option('-i, --inspect', 'Enable debugging (Node.js inspector)')
-  .action(engine.run(secrets));
+  .action((source, {title, credentials, ...options}) => {
+    const secret = secrets(credentials, title);
+    return engine.run(source, {title, secret, ...options});
+  });
 
 program.parse(process.argv);
