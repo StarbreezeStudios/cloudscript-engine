@@ -76,7 +76,7 @@ program
   .option('-i, --inspect', 'Enable debugging (Node.js inspector)')
   .action((source, {title, credentials, ...options}) => {
     const secret = secrets(credentials, title);
-    return engine.run(source, {title, secret, ...options});
+    report(engine.run(source, {title, secret, ...options}));
   });
 
 program.parse(process.argv);
