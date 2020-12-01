@@ -4,7 +4,9 @@ const needle = require('needle');
 
 const FORWARD_HEADERS = [
   'x-entitytoken',
-  'x-authorization'
+  'x-authorization',
+  'x-secretkey',
+  'x-playfabsdk'
 ];
 
 const propagate_header = (src, dest) => header => {
