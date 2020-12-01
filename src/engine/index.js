@@ -2,23 +2,22 @@
 
 const local_require = require('../local_require');
 const web_server = require('./web_server');
-const inspect = require('./inspect');
-const monitor = require('./monitor');
-const forward_methods = require('./forward_methods');
+const Inspect = require('./inspect');
+const Monitor = require('./monitor');
+const forwarders = require('./forwarders');
 const validators = require('./validators');
 
-const run = secrets => (source, {title, port, credentials, ...options}) => {
-  const forward_method = forward_methods[options.forwardMethod];
+const run = (source, {title, secret, port, monitor, inspect, forwardMethod}) => {
+  const forwarder = forwarders[forwardMethod];
 
   const handlers = local_require(source);
-  const secret = secrets(credentials, title);
 
-  return web_server(forward_method)({title, port, secret, handlers})
-    .then(() => options.monitor && monitor(source))
-    .then(() => options.inspect && inspect());
+  return web_server({title, port, secret, handlers, forwarder})
+    .then(() => monitor && Monitor(source))
+    .then(() => inspect && Inspect());
 };
 
 module.exports = {
-  validators: validators(forward_methods),
+  validators: validators(forwarders),
   run
 };
