@@ -22,6 +22,7 @@ const sync_server = (title, secret) => {
     'DeletePlayer',
     'DeletePushNotificationTemplate',
     'DeleteSharedGroup',
+    'DeleteUsers',   //This is not in the SDK but it is used in our handler Gameserver/DeletePlayer.js !?
     'DeregisterGame',
     'EvaluateRandomResultTable',
     'ExecuteCloudScript',
