@@ -26,6 +26,6 @@ module.exports = async (source, bundle_path) => {
       if (stats.hasErrors()) {
         throw stats.compilation.errors;
       }
-      return `cloudscript-engine created bundle: ${bundle_path}!`;
+      return `csengine created bundle: ${bundle_path}!`;
     });
 };
