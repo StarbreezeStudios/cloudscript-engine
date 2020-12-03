@@ -1,0 +1,6 @@
+'use strict';
+
+module.exports = {
+    <%= handlerName %>: require('./<%= handlerName %>'),
+    // ... Add your additional handlers here
+};

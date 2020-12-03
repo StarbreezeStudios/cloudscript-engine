@@ -1,0 +1,12 @@
+'use strict';
+
+module.exports = globals => (args, context) => {
+    const {server, log, currentPlayerId} = globals;
+
+    const userInfoResult = server.GetUserAccountInfo({ PlayFabId: currentPlayerId });
+    log.info('User info loaded');
+
+    // Do your magic here !!
+
+    return userInfoResult.UserInfo.TitleInfo.DisplayName;
+};

@@ -1,0 +1,19 @@
+'use strict';
+
+const assert = require('assert');
+const <%= handlerName %> = require('<%= relativeHandlerPath %>/<%= handlerName %>');
+
+describe('<%= handlerName %>', function () {
+
+    it('should ...', async () => {
+        const globals = {};// Your fake globals here
+        const <%= lowerCasedHandlerName %> = <%= handlerName %>(globals);
+        const args = {}; // Your arguments here
+        const context = {}; // Your context here
+
+        const result = <%= lowerCasedHandlerName %>(args, context);
+
+        assert.strictEqual(result, {}); // Place your assertions here
+    });
+
+});

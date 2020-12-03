@@ -7,9 +7,13 @@ const report = require('./report');
 const builder = require('./builder');
 const engine = require('./engine');
 const upload = require('./uploader');
+const {
+  create_compiler,
+  create_handler
+} = require('./scaffold');
 
-const { version } = require('../package.json');
-const { program } = require('commander');
+const {version} = require('../package.json');
+const {program} = require('commander');
 
 const TITLE = [
   '-t, --title <title>',
@@ -78,5 +82,33 @@ program
     const secret = secrets(credentials, title);
     report(engine.run(source, {title, secret, ...options}));
   });
+
+program
+  .command('create-handler <handler-name>')
+  .description('Creates a new empty handler')
+  .option('-s, --handler-path <handler-path>', 'Path where handler should be located.', './src')
+  .option('-t, --test-path <test-path>', 'Path where handler should be located.', './test')
+  .option('-n, --no-tests', 'Don\'t create tests for this handler', false)
+  .option('-d, --double-quotes', 'Use double quotes for strings or single quotes otherwise')
+  .option('-f, --force', 'Force file overwrite if already exists', false)
+  .action(create_handler);
+
+const optionUnwrap = (a, b, c) => {
+  console.log();
+};
+
+program
+  .command('init')
+  .description('create base project structure with a sample handler and tests')
+  .option('-s, --handler-path <handler-path>', 'Path where handler should be located.', './src')
+  .option('-t, --test-path <test-path>', 'Path where handler should be located.', './test')
+  .option('-n, --no-tests', 'Don\'t create tests for this handler', false)
+  .option('-d, --double-quotes', 'Use double quotes for strings or single quotes otherwise')
+  .option('-f, --force', 'Force file overwrite if already exists', false)
+  .action(options => {
+    create_compiler('HelloWorld', options);
+    create_handler('HelloWorld', options);
+  });
+
 
 program.parse(process.argv);
