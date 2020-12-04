@@ -1,6 +1,6 @@
 {
   "name": "cloudscript-engine",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "NodeJS based PlayFab CloudScript engine",
   "repository": {
     "type": "git",
