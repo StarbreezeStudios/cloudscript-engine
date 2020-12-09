@@ -8,8 +8,9 @@ const builder = require('./builder');
 const engine = require('./engine');
 const upload = require('./uploader');
 const {
-  create_compiler,
-  create_handler
+  create_base_project,
+  create_handler,
+  compile_handlers
 } = require('./scaffold');
 
 const {version} = require('../package.json');
@@ -45,6 +46,19 @@ const WEB_SERVER_PORT = [
   engine.validators.web_server_port,
   '3000'
 ];
+
+const SCAFFOLD_OPTIONS = [
+  ['-s, --src-path <handler-path>', 'Path where handlers should be located.', './src'],
+  ['-t, --test-path <test-path>', 'Path where tests should be located.', './test'],
+  ['-n, --no-tests', 'Don\'t create tests for this handler', false],
+  ['-d, --double-quotes', 'Use double quotes for strings. Single quotes by default'],
+  ['-f, --force', 'Force file overwrite if already exists', false]
+];
+
+const unroll_options = options => program => {
+  options.forEach(args => program.option(...args));
+  return program;
+};
 
 program
   .version(version);
@@ -83,32 +97,16 @@ program
     report(engine.run(source, {title, secret, ...options}));
   });
 
-program
-  .command('create-handler <handler-name>')
-  .description('Creates a new empty handler')
-  .option('-s, --handler-path <handler-path>', 'Path where handler should be located.', './src')
-  .option('-t, --test-path <test-path>', 'Path where handler should be located.', './test')
-  .option('-n, --no-tests', 'Don\'t create tests for this handler', false)
-  .option('-d, --double-quotes', 'Use double quotes for strings or single quotes otherwise')
-  .option('-f, --force', 'Force file overwrite if already exists', false)
-  .action(create_handler);
+unroll_options(SCAFFOLD_OPTIONS)(
+  program
+    .command('create-handler <handler-name>')
+    .description('Creates a new empty handler')
+).action(create_handler);
 
-const optionUnwrap = (a, b, c) => {
-  console.log();
-};
-
-program
-  .command('init')
-  .description('create base project structure with a sample handler and tests')
-  .option('-s, --handler-path <handler-path>', 'Path where handler should be located.', './src')
-  .option('-t, --test-path <test-path>', 'Path where handler should be located.', './test')
-  .option('-n, --no-tests', 'Don\'t create tests for this handler', false)
-  .option('-d, --double-quotes', 'Use double quotes for strings or single quotes otherwise')
-  .option('-f, --force', 'Force file overwrite if already exists', false)
-  .action(options => {
-    create_compiler('HelloWorld', options);
-    create_handler('HelloWorld', options);
-  });
-
+unroll_options(SCAFFOLD_OPTIONS)(
+  program
+    .command('init')
+    .description('Creates base project structure with a sample handler and its tests')
+).action(create_base_project);
 
 program.parse(process.argv);
