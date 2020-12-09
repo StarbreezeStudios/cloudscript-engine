@@ -2,5 +2,5 @@
 
 module.exports = {
   create_handler: require('./create_handler'),
-  create_compiler: require('./create_compiler')
+  create_base_project: require('./create_base_project')
 };

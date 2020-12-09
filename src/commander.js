@@ -9,12 +9,11 @@ const engine = require('./engine');
 const upload = require('./uploader');
 const {
   create_base_project,
-  create_handler,
-  compile_handlers
+  create_handler
 } = require('./scaffold');
 
-const {version} = require('../package.json');
-const {program} = require('commander');
+const { version } = require('../package.json');
+const { program } = require('commander');
 
 const TITLE = [
   '-t, --title <title>',
@@ -48,7 +47,7 @@ const WEB_SERVER_PORT = [
 ];
 
 const SCAFFOLD_OPTIONS = [
-  ['-s, --src-path <handler-path>', 'Path where handlers should be located.', './src'],
+  ['-s, --src-path <source-path>', 'Path where handlers should be located.', './src'],
   ['-t, --test-path <test-path>', 'Path where tests should be located.', './test'],
   ['-n, --no-tests', 'Don\'t create tests for this handler', false],
   ['-d, --double-quotes', 'Use double quotes for strings. Single quotes by default'],
@@ -56,8 +55,7 @@ const SCAFFOLD_OPTIONS = [
 ];
 
 const unroll_options = options => program => {
-  options.forEach(args => program.option(...args));
-  return program;
+  return options.reduce((program, options) => program.option(...options), program);
 };
 
 program
@@ -101,12 +99,20 @@ unroll_options(SCAFFOLD_OPTIONS)(
   program
     .command('create-handler <handler-name>')
     .description('Creates a new empty handler')
-).action(create_handler);
+).action((handlerName, options) => {
+  console.info( `Creating handler ${handlerName}...`);
+  create_handler(handlerName, options);
+  console.info(`Handler ${handlerName} created. Don't forget to add it to your index.js file`);
+});
 
 unroll_options(SCAFFOLD_OPTIONS)(
   program
     .command('init')
     .description('Creates base project structure with a sample handler and its tests')
-).action(create_base_project);
+).action(options => {
+  console.info('Creating base project structure...');
+  create_base_project(options);
+  console.info('Base project structure created.');
+});
 
 program.parse(process.argv);
