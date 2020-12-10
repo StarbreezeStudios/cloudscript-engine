@@ -7,6 +7,10 @@ const report = require('./report');
 const builder = require('./builder');
 const engine = require('./engine');
 const upload = require('./uploader');
+const {
+  create_base_project,
+  create_handler
+} = require('./scaffold');
 
 const { version } = require('../package.json');
 const { program } = require('commander');
@@ -41,6 +45,18 @@ const WEB_SERVER_PORT = [
   engine.validators.web_server_port,
   '3000'
 ];
+
+const SCAFFOLD_OPTIONS = [
+  ['-s, --src-path <source-path>', 'Path where handlers should be located.', './src'],
+  ['-t, --test-path <test-path>', 'Path where tests should be located.', './test'],
+  ['-n, --no-tests', 'Don\'t create tests for this handler', false],
+  ['-d, --double-quotes', 'Use double quotes for strings. Single quotes by default'],
+  ['-f, --force', 'Force file overwrite if already exists', false]
+];
+
+const unroll_options = options => program => {
+  return options.reduce((program, options) => program.option(...options), program);
+};
 
 program
   .version(version);
@@ -78,5 +94,25 @@ program
     const secret = secrets(credentials, title);
     report(engine.run(source, {title, secret, ...options}));
   });
+
+unroll_options(SCAFFOLD_OPTIONS)(
+  program
+    .command('create-handler <handler-name>')
+    .description('Creates a new empty handler')
+).action((handlerName, options) => {
+  console.info( `Creating handler ${handlerName}...`);
+  create_handler(handlerName, options);
+  console.info(`Handler ${handlerName} created. Don't forget to add it to your index.js file`);
+});
+
+unroll_options(SCAFFOLD_OPTIONS)(
+  program
+    .command('init')
+    .description('Creates base project structure with a sample handler and its tests')
+).action(options => {
+  console.info('Creating base project structure...');
+  create_base_project(options);
+  console.info('Base project structure created.');
+});
 
 program.parse(process.argv);
