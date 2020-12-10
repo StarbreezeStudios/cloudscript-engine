@@ -9,19 +9,28 @@
  */
 
 const assert = require('assert');
+const {build_fake_globals} = require("cloudscript-engine");
 const <%= handlerName %> = require('<%= relativeSrcPath %>/<%= handlerName %>');
 
 describe('<%= handlerName %>', function () {
 
-    it('should ...', async () => {
-        const globals = {};// Your fake globals here
+    it('should return user display name', async () => {
+        const globals = build_fake_globals();
+        const DisplayName = "MY_DISPLAY_NAME";
+        globals.server.GetUserAccountInfo.returns({
+            UserInfo: {
+                TitleInfo: {
+                    DisplayName
+                }
+            }
+        });
         const <%= lowerCasedHandlerName %> = <%= handlerName %>(globals);
         const args = {}; // Your arguments here
         const context = {}; // Your context here
 
         const result = <%= lowerCasedHandlerName %>(args, context);
 
-        assert.strictEqual(result, {}); // Place your assertions here
+        assert.strictEqual(result, DisplayName); // Place your assertions here
     });
 
 });
