@@ -13,8 +13,9 @@ module.exports = () => {
     server,
     log: {
       debug: sinon.stub(),
+      info: sinon.stub(),
+      info: sinon.stub(),
       error: sinon.stub()
     }
   };
 };
-
